@@ -4,9 +4,8 @@ micronaut:
 grpc:
   server:
     port: 50052
-    ssl:
-      cert-chain:
-        file://src/test/resources/domain.csr
+  client:
+    plaintext: true
   channels:
     productsService:
       target: localhost:50052
