@@ -1,20 +1,27 @@
 package com.ecommerce.util
 
 import com.ecommerce.CreateProductRequest
+import com.ecommerce.errors.IllegalProductNameException
+import com.ecommerce.errors.IllegalProductNullException
+import com.ecommerce.errors.IllegalProductPriceNaNException
+import com.ecommerce.errors.IllegalProductPriceNegativeException
 
 class ValidationUtil {
     companion object {
         fun validatePayload(payload: CreateProductRequest?): CreateProductRequest {
             if (payload == null)
-                throw IllegalArgumentException("Product is null")
+                throw IllegalProductNullException()
 
 
             payload.let { product ->
                 if (product.name.isNullOrBlank())
-                    throw IllegalArgumentException("Product name is null or empty")
+                    throw IllegalProductNameException()
 
                 if (product.price.isNaN())
-                    throw IllegalArgumentException("Product price is not a number")
+                    throw IllegalProductPriceNaNException()
+
+                if (product.price < 0)
+                    throw IllegalProductPriceNegativeException()
 
                 return product
             }
